@@ -53,7 +53,7 @@ An Ansible role that installs and configures [Vector](https://vector.dev/) log c
             host: "clickhouse-server"
             database: "logs"
             table: "system_logs"
-
+```          
 
 ### License
 -------
