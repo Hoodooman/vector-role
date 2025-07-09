@@ -1,0 +1,15 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  ansible-lint .
+  yamllint .
+platforms:
+  - name: ubuntu
+    image: ubuntu:22.04
+  - name: oracle
+    image: oraclelinux:8
+  - name: centos7
+    image: centos:7
