@@ -1,0 +1,15 @@
+---
+- name: Verify and Install Vector
+  hosts: all
+  become: true  # Run as root (required for package installation)
+  tasks:
+    - name: Verify Vector installation
+      ansible.builtin.command: vector --version
+      register: vector_version_after_install
+      changed_when: false
+      failed_when: false
+
+    - name: Assert Vector is installed
+      ansible.builtin.assert:
+        that: vector_version_after_install.rc == 0
+        fail_msg: "Vector installation failed!"

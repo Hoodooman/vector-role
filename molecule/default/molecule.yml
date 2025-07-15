@@ -1,0 +1,18 @@
+---
+#dependency:
+#  name: galaxy
+driver:
+  name: docker
+lint: |
+  ansible-lint .
+  yamllint .  
+platforms:
+  - name: instance_py
+    #image: ubuntu:latest  # Or an image with Python pre-installed
+    image: python:3.11-slim
+scenario:
+  test_sequence:
+    - create
+    - converge
+    - idempotence
+    - verify    # Optional

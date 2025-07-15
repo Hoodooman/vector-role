@@ -1,5 +1,17 @@
 ---
 # tasks file for vector-role
+- name: Install Python (for Ansible)
+  ansible.builtin.raw: |
+    if command -v apt-get >/dev/null; then
+      apt-get update && apt-get install -y python3
+    elif command -v yum >/dev/null; then
+      yum install -y python3
+    elif command -v dnf >/dev/null; then
+      dnf install -y python3
+    fi
+  register: python_install
+  changed_when: python_install.rc == 0
+  become: true
 - name: Download Vector package
   ansible.builtin.get_url:
     url: "{{ vector_download_url }}"
