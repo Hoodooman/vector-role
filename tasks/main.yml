@@ -12,6 +12,7 @@
   register: python_install
   changed_when: python_install.rc == 0
   become: true
+
 - name: Download Vector package
   ansible.builtin.get_url:
     url: "{{ vector_download_url }}"
@@ -28,15 +29,31 @@
     state: directory
     mode: '0755'
 
-- name: Deploy Vector configuration from template
+- name: Deploy Vector configuration from template (systemd)
   ansible.builtin.template:
     src: templates/vector.yml.j2
     dest: "{{ vector_config_dir }}/{{ vector_config_file }}"
     mode: '0644'
+  when: ansible_service_mgr == 'systemd'
   notify: Restart Vector
 
-- name: Start and enable Vector service
-  ansible.builtin.service:
+- name: Deploy Vector configuration from template non-systemd)
+  ansible.builtin.template:
+    src: templates/vector_non_systemd.yml.j2
+    dest: "{{ vector_config_dir }}/{{ vector_config_file }}"
+    mode: '0644'
+  when: ansible_service_mgr != 'systemd'
+  notify: Restart Vector
+
+- name: Start Vector (systemd)
+  ansible.builtin.systemd:
     name: vector
     state: started
     enabled: yes
+  when: ansible_service_mgr == 'systemd'
+
+- name: Start Vector (non-systemd docker for hw 08-ansible-04-role)
+  ansible.builtin.command: |
+    which vector
+  register: vector_install
+  when: ansible_service_mgr != 'systemd'

@@ -1,8 +1,4 @@
 ---
-# defaults file for vector-role
-ansible_python_interpreter: 
-  - /usr/local/bin/python3
-  - /usr/bin/python3
-  - /usr/local/bin/python
-  - /usr/bin/python
+# defaults for ubuntu only 
+ansible_python_interpreter: /usr/bin/python3
 ansible_python_interpreter_discovery: auto_silent
