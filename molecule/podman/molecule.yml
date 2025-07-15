@@ -1,0 +1,19 @@
+---
+#dependency:
+#  name: galaxy
+driver:
+  name: podman
+lint: |
+  ansible-lint .
+  yamllint .
+platforms:
+  - name: instance_podman
+    image: ubuntu:latest  # Or an image with Python pre-installed
+    #image: python:3.11-slim
+scenario:
+  test_sequence:
+    - create
+    - converge
+    #- idempotence
+    - verify    # Optional
+    - destroy
